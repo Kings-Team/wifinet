@@ -17,12 +17,14 @@ return new class () extends Migration {
             $table->unsignedBigInteger('router_id')->nullable()->after('odp_port_id');
             $table->unsignedBigInteger('olt_id')->nullable()->after('router_id');
             $table->unsignedBigInteger('pemasangan_id')->nullable()->unique()->after('olt_id');
+            $table->unsignedBigInteger('paket_id')->nullable()->unique()->after('pemasangan_id');
             $table->foreign('onu_id')->references('id')->on('onu')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('port_id')->references('id')->on('port')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('odp_port_id')->references('id')->on('odp_port')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('router_id')->references('id')->on('routers')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('olt_id')->references('id')->on('olt')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('pemasangan_id')->references('id')->on('pemasangan')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('paket_id')->references('id')->on('paket')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 
@@ -44,6 +46,8 @@ return new class () extends Migration {
             $table->dropColumn('olt_id');
             $table->dropForeign(['pemasangan_id']);
             $table->dropColumn('pemasangan_id');
+            $table->dropForeign(['paket_id']);
+            $table->dropColumn('paket_id');
         });
     }
 };

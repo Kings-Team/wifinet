@@ -25,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'mitra_id',
     ];
 
     /**
@@ -46,4 +47,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function mitra()
+    {
+        return $this->belongsTo(Mitra::class, 'mitra_id');
+    }
 }
