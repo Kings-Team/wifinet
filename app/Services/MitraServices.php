@@ -70,7 +70,8 @@ class MitraServices
         }
     }
 
-    public function deleteMitra($id){
+    public function deleteMitra($id)
+    {
         try {
             $mitra = $this->mitra->findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {

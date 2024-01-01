@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -18,6 +19,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger('olt_id')->nullable()->after('router_id');
             $table->unsignedBigInteger('pemasangan_id')->nullable()->unique()->after('olt_id');
             $table->unsignedBigInteger('paket_id')->nullable()->unique()->after('pemasangan_id');
+            $table->unsignedBigInteger('mitra_id')->nullable()->unique()->after('paket_id');
             $table->foreign('onu_id')->references('id')->on('onu')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('port_id')->references('id')->on('port')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('odp_port_id')->references('id')->on('odp_port')->onDelete('restrict')->onUpdate('restrict');
@@ -25,6 +27,7 @@ return new class () extends Migration {
             $table->foreign('olt_id')->references('id')->on('olt')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('pemasangan_id')->references('id')->on('pemasangan')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('paket_id')->references('id')->on('paket')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('mitra_id')->references('id')->on('mitra')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 
@@ -48,6 +51,8 @@ return new class () extends Migration {
             $table->dropColumn('pemasangan_id');
             $table->dropForeign(['paket_id']);
             $table->dropColumn('paket_id');
+            $table->dropForeign(['mitra_id']);
+            $table->dropColumn('mitra_id');
         });
     }
 };

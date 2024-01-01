@@ -189,26 +189,37 @@
                  </li>
              @endcan
          </ul> --}}
+
             <ul class="menu-sub">
                 {{-- @can('read pendaftaran') --}}
                 {{-- @if (auth()->user()->hasRole('teknisi')) --}}
                 <!-- Sidebar teknisi -->
-                <li class="menu-item {{ Route::is('route.pelanggans.index') ? 'active' : '' }}">
+                {{-- <li class="menu-item {{ Route::is('route.pelanggans.index') ? 'active' : '' }}">
                     <a href="" class="menu-link">
                         <div data-i18n="Without menu" style="color: black">Pemasangan</div>
                     </a>
-                </li>
+                </li> --}}
                 {{-- @else --}}
                 <!-- Sidebar admin dan sales -->
-                <li class="menu-item {{ Route::is('route.pemasangans.index') ? 'active' : '' }}">
+                {{-- <li class="menu-item {{ Route::is('route.pemasangans.index') ? 'active' : '' }}">
                     <a href="" class="menu-link">
                         <div data-i18n="Without menu" style="color: black">Pemasangan</div>
                     </a>
-                </li>
+                </li> --}}
                 {{-- @endif --}}
                 {{-- @endcan --}}
             </ul>
 
+
+            <ul class="menu-sub">
+                @can('read pemasangan')
+                    <li class="menu-item {{ Route::is('route.pemasangans.index') ? 'active' : '' }}">
+                        <a href="{{ route('pemasangan') }}" class="menu-link">
+                            <div data-i18n="Without menu" style="color: black">Pemasangan</div>
+                        </a>
+                    </li>
+                @endcan
+            </ul>
 
             <ul class="menu-sub">
                 {{-- @can('read ubah paket') --}}

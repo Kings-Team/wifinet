@@ -16,7 +16,7 @@ class RolePermissionSedeer extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {   
+    {
         Mitra::create([
             'id' => 1,
             'nama_mitra' => 'JayaRadius'
@@ -33,6 +33,7 @@ class RolePermissionSedeer extends Seeder
         $admin = User::create([
             'email' => 'admin@gmail.com',
             'name' => 'admin',
+            'mitra_id' => 1,
             'email_verified_at' => now(),
             'password' => bcrypt('admin'),
             'remember_token' => Str::random(10),
@@ -40,6 +41,7 @@ class RolePermissionSedeer extends Seeder
         $teknisi = User::create([
             'email' => 'teknisi@gmail.com',
             'name' => 'teknisi',
+            'mitra_id' => 1,
             'email_verified_at' => now(),
             'password' => bcrypt('teknisi'),
             'remember_token' => Str::random(10),
@@ -47,17 +49,18 @@ class RolePermissionSedeer extends Seeder
         $sales = User::create([
             'email' => 'sales@gmail.com',
             'name' => 'sales',
+            'mitra_id' => 1,
             'email_verified_at' => now(),
             'password' => bcrypt('sales'),
             'remember_token' => Str::random(10),
         ]);
 
-        
+
 
         $role_route = Role::create(['name' => 'route']);
-        $role_admin = Role::create(['name' => 'admin']);
-        $role_teknisi = Role::create(['name' => 'teknisi']);
-        $role_sales = Role::create(['name' => 'sales']);
+        $role_admin = Role::create(['name' => 'admin JayaRadius']);
+        $role_teknisi = Role::create(['name' => 'teknisi JayaRadius']);
+        $role_sales = Role::create(['name' => 'sales JayaRadius']);
 
         $permission = Permission::create(['name' => 'create file manager']);
         $permission = Permission::create(['name' => 'read file manager']);
@@ -69,10 +72,10 @@ class RolePermissionSedeer extends Seeder
         $permission = Permission::create(['name' => 'update module']);
         $permission = Permission::create(['name' => 'delete module']);
 
-        $permission = Permission::create(['name' => 'create pendaftaran']);
-        $permission = Permission::create(['name' => 'read pendaftaran']);
-        $permission = Permission::create(['name' => 'update pendaftaran']);
-        $permission = Permission::create(['name' => 'delete pendaftaran']);
+        $permission = Permission::create(['name' => 'create pemasangan']);
+        $permission = Permission::create(['name' => 'read pemasangan']);
+        $permission = Permission::create(['name' => 'update pemasangan']);
+        $permission = Permission::create(['name' => 'delete pemasangan']);
 
         $permission = Permission::create(['name' => 'create paket']);
         $permission = Permission::create(['name' => 'read paket']);
@@ -145,14 +148,14 @@ class RolePermissionSedeer extends Seeder
         $permission = Permission::create(['name' => 'delete tunggakan']);
 
         $route->assignRole('route');
-        $admin->assignRole('admin');
-        $teknisi->assignRole('teknisi');
-        $sales->assignRole('sales');
+        $admin->assignRole('admin JayaRadius');
+        $teknisi->assignRole('teknisi JayaRadius');
+        $sales->assignRole('sales JayaRadius');
 
-        $role_route->givePermissionTo('create pendaftaran');
-        $role_route->givePermissionTo('read pendaftaran');
-        $role_route->givePermissionTo('update pendaftaran');
-        $role_route->givePermissionTo('delete pendaftaran');
+        $role_route->givePermissionTo('create pemasangan');
+        $role_route->givePermissionTo('read pemasangan');
+        $role_route->givePermissionTo('update pemasangan');
+        $role_route->givePermissionTo('delete pemasangan');
 
         $role_route->givePermissionTo('create paket');
         $role_route->givePermissionTo('read paket');
