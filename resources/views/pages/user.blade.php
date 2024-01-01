@@ -7,8 +7,7 @@
                     Master /</span> User</h4>
             <div class="card">
                 <h5 class="card-header">
-                    <button class="btn btn-outline-primary float-end" data-bs-toggle="modal"
-                        data-bs-target="#add-user">Tambah</button>
+                    <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add-user">Tambah</button>
                 </h5>
                 <div class="table-responsive text-nowrap">
                     <table class="table mb-3">
@@ -17,7 +16,9 @@
                                 <th>No</th>
                                 <th>Aksi</th>
                                 <th>Nama</th>
+                                <th>Role</th>
                                 <th>Email</th>
+                                <th>Permissions</th>
                                 <th>Mitra</th>
                             </tr>
                         </thead>
@@ -36,15 +37,37 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="javascript:void(0);"><i
                                                         class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                <a class="dropdown-item" href="javascript:void(0);"><i
-                                                        class="bx bx-trash me-1"></i> Delete</a>
+                                                <button data-bs-toggle="modal"
+                                                    data-bs-target="#modalHapus{{ $item->id }}" class="dropdown-item"><i
+                                                        class="bx bx-trash me-1"></i>
+                                                    Hapus</button>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <strong>{{ $item->name }}</strong>
                                     </td>
-                                    <td>{{ $item->email }}</td>
+                                    <td>
+                                        @if ($item->roles->isNotEmpty())
+                                            <span
+                                                class="badge bg-label-primary me-1">{{ $item->roles->pluck('name')->implode(', ') }}</span>
+                                        @else
+                                            No Role
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{ $item->email }}
+                                    </td>
+                                    <td>
+                                        @if ($item->roles->isNotEmpty())
+                                            @foreach ($item->roles as $role)
+                                                @if ($role->permissions->isNotEmpty())
+                                                    <span
+                                                        class="badge bg-label-primary me-1">{{ $role->permissions->pluck('name')->implode(', ') }}</span>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </td>
                                     <td>{{ optional($item->mitra)->nama_mitra }}</td>
                                 </tr>
                             @endforeach
@@ -64,50 +87,78 @@
                     <h5 class="modal-title" id="exampleModalLabel4">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col mb-3">
-                            <label for="nameExLarge" class="form-label">Name</label>
-                            <input type="text" id="nameExLarge" class="form-control" placeholder="Enter Name" required />
+                <form action="{{ route('user.add') }}" method="post">
+                    @csrf
+                    @method('POST')
+                    <div class="modal-body">
+                        <div class="row g-2">
+                            <div class="col mb-3">
+                                <label for="nama" class="form-label">Nama</label>
+                                <input type="text" id="nama" name="name" class="form-control"
+                                    placeholder="Masukan Name" required />
+                            </div>
+                            <div class="col mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <input type="text" id="role" name="name_role" class="form-control"
+                                    placeholder="Enter Name" required />
+                            </div>
                         </div>
-                    </div>
-                    <div class="row g-2 mb-3">
-                        <div class="col mb-0">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="text" id="email" name="email" class="form-control"
-                                placeholder="xxxx@gmail.com" required />
+                        <div class="row g-2 mb-3">
+                            <div class="col mb-0">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" id="email" name="email" class="form-control"
+                                    placeholder="xxxx@gmail.com" required />
+                            </div>
+                            <div class="col mb-0">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="text" id="password" name="password" class="form-control"
+                                    placeholder="********" required />
+                            </div>
                         </div>
-                        <div class="col mb-0">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="text" id="password" name="password" class="form-control" placeholder="********"
-                                required />
+                        <div class="row mb-3">
+                            <div class="col mb-0">
+                                <label for="mitra_id" class="form-label">Mitra</label>
+                                <div class="input-group">
+                                    <select class="form-select" id="mitra_id" name="mitra_id">
+                                        <option value="" selected>Pilih Mitra</option>
+                                        @foreach ($mitra as $item)
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->nama_mitra }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#add-mitra" type="button">Tambah Mitra</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col mb-0">
-                            <label for="mitra_id" class="form-label">Mitra</label>
-                            <div class="input-group">
-                                <select class="form-select" id="mitra_id" name="mitra_id">
-                                    <option value="" selected>Pilih Mitra...</option>
-                                    @foreach ($mitra as $item)
-                                        <option value="{{ $item->id }}">
-                                            {{ $item->nama_mitra }}
-                                        </option>
+                        <div class="row mb-3">
+                            <div class="col mb-0">
+                                <label class="form-label">Permissions</label>
+                                <div class="form-check d-flex flex-wrap">
+                                    <div class="form-check me-3 mb-2" style="flex-basis: 20%;">
+                                        <input class="form-check-input" type="checkbox" id="select-all">
+                                        <label class="form-check-label" for="select-all">check all</label>
+                                    </div>
+                                    @foreach ($permission as $item)
+                                        <div class="form-check me-3 mb-2" style="flex-basis: 20%;">
+                                            <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                id="permissions_{{ $item->id }}" value="{{ $item->name }}">
+                                            <label class="form-check-label"
+                                                for="permissions_{{ $item->id }}">{{ $item->name }}</label>
+                                        </div>
                                     @endforeach
-                                </select>
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal"
-                                    data-bs-target="#add-mitra">Tambah Mitra</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Tutup
+                        </button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -142,25 +193,36 @@
             </div>
         </div>
     </div>
+
+    {{-- modal delete --}}
+    @foreach ($data as $value)
+        <div class="modal fade" id="modalHapus{{ $value->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form id="formHapus" method="POST" action="{{ route('user.delete', $value->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Apakah Anda Yakin Ingin Menghapus data?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Batal
+                            </button>
+                            <button type="submit" class="btn btn-primary">Hapus</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
 @endsection
 
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-
-            searchInput.addEventListener('input', function() {
-                const searchValue = searchInput.value;
-                const currentUrl = new URL(window.location.href);
-
-                if (searchValue.trim() !== '') {
-                    currentUrl.searchParams.set('search', searchValue);
-                } else {
-                    currentUrl.searchParams.delete('search');
-                }
-
-                window.location.href = currentUrl.toString();
-            });
             @if (Session::has('message'))
                 Swal.fire({
                     title: 'Berhasil',
@@ -182,6 +244,29 @@
                     confirmButtonText: 'OK'
                 });
             @endif
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('select-all');
+            const permissionCheckboxes = document.querySelectorAll('input[name="permissions[]"]');
+
+            selectAllCheckbox.addEventListener('change', function() {
+                for (const checkbox of permissionCheckboxes) {
+                    checkbox.checked = this.checked;
+                }
+            });
+
+            for (const checkbox of permissionCheckboxes) {
+                checkbox.addEventListener('change', function() {
+                    if (!this.checked) {
+                        selectAllCheckbox.checked = false;
+                    } else {
+                        const allChecked = Array.from(permissionCheckboxes).every(cb => cb.checked);
+                        selectAllCheckbox.checked = allChecked;
+                    }
+                });
+            }
         });
     </script>
 @endpush

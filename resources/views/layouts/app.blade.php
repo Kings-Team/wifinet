@@ -49,7 +49,8 @@
     @stack('styles')
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
-
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
@@ -58,7 +59,7 @@
 
 <body>
     <!-- Layout wrapper -->
-    @include('sweetalert::alert')
+    {{-- @include('sweetalert::alert') --}}
 
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -124,7 +125,7 @@
 
     <!-- Page JS -->
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
-    
+
     <script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
@@ -144,6 +145,8 @@
     </script>
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

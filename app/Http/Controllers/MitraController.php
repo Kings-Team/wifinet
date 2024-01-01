@@ -16,11 +16,10 @@ class MitraController extends Controller
         $this->mitraServices = new MitraServices();
     }
 
-
     public function index()
     {
-        $data = $this->mitraServices->fetchAll();
-        return view('mitra', $data);
+        $data = $this->mitraServices->fetchAllMitra();
+        return view('mitra', ['data', $data]);
     }
 
     public function store(Request $request)
@@ -35,14 +34,9 @@ class MitraController extends Controller
 
         $data = $this->validate($request, $rules, $msg);
 
-        $request =  $this->mitraServices->add($data);
+        $request =  $this->mitraServices->addMitra($data);
 
-        if (!$request) {
-            Alert::error('Error', 'Gagal menambah mitra');
-            return redirect()->back()->withErrors('Failed to add Mitra');
-        }
-        Alert::success("Berhasil", "Berhasil menambah mitra");
-        return redirect()->route('user')->with('success', 'Mitra added successfully');
+        return redirect()->route('user')->with('message', $request['message']);
     }
 
     public function update(Request $request, $id)
@@ -57,13 +51,13 @@ class MitraController extends Controller
 
         $data = $this->validate($request, $rules, $msg);
 
-        $updateResult = $this->mitraServices->update($data, $id);
+        $request = $this->mitraServices->updateMitra($data, $id);
 
-        if (!$updateResult) {
-            return redirect()->back()->withErrors('Failed to update Mitra');
-        }
-
-        return redirect()->route('mitra.index')->with('success', 'Mitra updated successfully');
+        return redirect()->route('user')->with('message', $request['message']);
     }
 
+    public function delete($id)
+    {
+        return $this->mitraServices->deleteMitra($id);
+    }
 }

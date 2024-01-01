@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\WebException;
 use App\Models\Mitra;
 use Illuminate\Support\Facades\DB;
 
@@ -14,13 +15,12 @@ class MitraServices
         $this->mitra = new Mitra();
     }
 
-    public function fetchAll()
+    public function fetchAllMitra()
     {
-        $data = $this->mitra->all();
-        return compact('data');
+        return Mitra::all();
     }
 
-    public function add($request)
+    public function addMitra($request)
     {
         DB::beginTransaction();
 
@@ -31,23 +31,23 @@ class MitraServices
 
             if (isset($isCreated)) {
                 DB::commit();
+                return [
+                    'status' => true,
+                    'code' => 201,
+                    'message' => "Berhasil menambah mitra"
+                ];
             }
-
         } catch (\Exception $e) {
-            DB::rollback();
-
-            return false;
+            throw new WebException($e->getMessage());
         }
-
-        return true;
     }
 
-    public function update($request, $id)
+    public function updateMitra($request, $id)
     {
         try {
             $mitra = $this->mitra->findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return false;
+            throw new WebException($e->getMessage());
         }
 
         DB::beginTransaction();
@@ -59,13 +59,33 @@ class MitraServices
 
             if ($update) {
                 DB::commit();
+                return [
+                    'status' => true,
+                    'code' => 200,
+                    'message' => "Berhasil memperbarui mitra"
+                ];
             }
         } catch (\Exception $e) {
-            DB::rollback();
+            throw new WebException($e->getMessage());
+        }
+    }
 
-            return false;
+    public function deleteMitra($id){
+        try {
+            $mitra = $this->mitra->findOrFail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw new WebException($e->getMessage());
         }
 
-        return true;
+        DB::beginTransaction();
+        if (isset($mitra)) {
+            $delete = $mitra->delete();
+            if ($delete) {
+                DB::commit();
+                return back()->with('message', 'Berhasil menghapus mitra');
+            }
+            throw new WebException('Gagal menghapus mitra, terjadi kesalahan');
+        }
+        throw new WebException('Gagal menghapus mitra, mitra tidak ditemukan');
     }
 }

@@ -59,26 +59,6 @@ class RolePermissionSedeer extends Seeder
         $role_teknisi = Role::create(['name' => 'teknisi']);
         $role_sales = Role::create(['name' => 'sales']);
 
-        $permission = Permission::create(['name' => 'create role']);
-        $permission = Permission::create(['name' => 'read role']);
-        $permission = Permission::create(['name' => 'update role']);
-        $permission = Permission::create(['name' => 'delete role']);
-
-        $permission = Permission::create(['name' => 'create user']);
-        $permission = Permission::create(['name' => 'read user']);
-        $permission = Permission::create(['name' => 'update user']);
-        $permission = Permission::create(['name' => 'delete user']);
-
-        $permission = Permission::create(['name' => 'create billing']);
-        $permission = Permission::create(['name' => 'read billing']);
-        $permission = Permission::create(['name' => 'update billing']);
-        $permission = Permission::create(['name' => 'delete billing']);
-
-        $permission = Permission::create(['name' => 'create permission']);
-        $permission = Permission::create(['name' => 'read permission']);
-        $permission = Permission::create(['name' => 'update permission']);
-        $permission = Permission::create(['name' => 'delete permission']);
-
         $permission = Permission::create(['name' => 'create file manager']);
         $permission = Permission::create(['name' => 'read file manager']);
         $permission = Permission::create(['name' => 'update file manager']);
@@ -168,26 +148,6 @@ class RolePermissionSedeer extends Seeder
         $admin->assignRole('admin');
         $teknisi->assignRole('teknisi');
         $sales->assignRole('sales');
-
-        $role_route->givePermissionTo('create role');
-        $role_route->givePermissionTo('read role');
-        $role_route->givePermissionTo('update role');
-        $role_route->givePermissionTo('delete role');
-
-        $role_route->givePermissionTo('create user');
-        $role_route->givePermissionTo('read user');
-        $role_route->givePermissionTo('update user');
-        $role_route->givePermissionTo('delete user');
-
-        $role_route->givePermissionTo('create billing');
-        $role_route->givePermissionTo('read billing');
-        $role_route->givePermissionTo('update billing');
-        $role_route->givePermissionTo('delete billing');
-
-        $role_route->givePermissionTo('create permission');
-        $role_route->givePermissionTo('read permission');
-        $role_route->givePermissionTo('update permission');
-        $role_route->givePermissionTo('delete permission');
 
         $role_route->givePermissionTo('create pendaftaran');
         $role_route->givePermissionTo('read pendaftaran');
