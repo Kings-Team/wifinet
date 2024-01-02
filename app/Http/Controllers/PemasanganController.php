@@ -13,6 +13,9 @@ class PemasanganController extends Controller
     public function __construct()
     {
         $this->middleware(['isAuth']);
+        $this->middleware(['permission:read pemasangan'], ['only' => ['index']]);
+        $this->middleware(['permission:create pemasangan|read pemasangan'], ['only' => ['store']]);
+        $this->middleware(['permission:update pemasangan|read pemasangan'], ['only' => ['update', 'assignment', 'updateSurvey', 'assignmentTeknisi', 'updateInstalasi', 'updateAktivasi', 'updatePembayaran', 'invoice']]);
         $this->pemasanganServices = new PemasanganServices();
     }
 

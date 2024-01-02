@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -48,7 +48,7 @@
             <span class="app-brand-text demo menu-text fw-bolder ms-2">WIFI</span>
         </a>
 
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <a href="" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
     </div>
@@ -178,37 +178,6 @@
                 <div data-i18n="Layouts" style="color: black">Service</div>
             </a>
 
-            {{-- <ul class="menu-sub">
-             @can('read pendaftaran')
-                 <li class="menu-item {{ Route::is('route.pemasangans.index') ? 'active' : '' }}">
-                     <a href="{{ route('route.pemasangans.index') }}" class="menu-link">
-                         <div data-i18n="Without menu" style="color: black">Pemasangan</div>
-                     </a>
-                 </li>
-             @endcan
-         </ul> --}}
-
-            <ul class="menu-sub">
-                {{-- @can('read pendaftaran') --}}
-                {{-- @if (auth()->user()->hasRole('teknisi')) --}}
-                <!-- Sidebar teknisi -->
-                {{-- <li class="menu-item {{ Route::is('route.pelanggans.index') ? 'active' : '' }}">
-                    <a href="" class="menu-link">
-                        <div data-i18n="Without menu" style="color: black">Pemasangan</div>
-                    </a>
-                </li> --}}
-                {{-- @else --}}
-                <!-- Sidebar admin dan sales -->
-                {{-- <li class="menu-item {{ Route::is('route.pemasangans.index') ? 'active' : '' }}">
-                    <a href="" class="menu-link">
-                        <div data-i18n="Without menu" style="color: black">Pemasangan</div>
-                    </a>
-                </li> --}}
-                {{-- @endif --}}
-                {{-- @endcan --}}
-            </ul>
-
-
             <ul class="menu-sub">
                 @can('read pemasangan')
                     <li class="menu-item {{ Route::is('route.pemasangans.index') ? 'active' : '' }}">
@@ -220,13 +189,13 @@
             </ul>
 
             <ul class="menu-sub">
-                {{-- @can('read ubah paket') --}}
-                <li class="menu-item {{ Route::is('route.ubah_pakets.index') ? 'active' : '' }}">
-                    <a href="" class="menu-link">
-                        <div data-i18n="Without menu" style="color: black">Ubah Paket</div>
-                    </a>
-                </li>
-                {{-- @endcan --}}
+                @can('read ubah paket')
+                    <li class="menu-item {{ Route::is('route.ubah_pakets.index') ? 'active' : '' }}">
+                        <a href="{{ route('ubah-paket') }}" class="menu-link">
+                            <div data-i18n="Without menu" style="color: black">Ubah Paket</div>
+                        </a>
+                    </li>
+                @endcan
             </ul>
 
             <ul class="menu-sub">

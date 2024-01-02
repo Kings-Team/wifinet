@@ -12,7 +12,8 @@ class MitraController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['role:route', 'isAuth']);
+        $this->middleware(['role:route']);
+        $this->middleware(['isAuth']);
         $this->mitraServices = new MitraServices();
     }
 

@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -12,6 +13,7 @@ return new class () extends Migration {
     {
         Schema::create('ubah_paket', function (Blueprint $table) {
             $table->id();
+            $table->string('paket_lama', 50)->nullable();
             $table->enum('status_proses', ['Berhasil', 'Gagal'])->nullable();
             $table->text('keterangan_proses')->nullable();
             $table->enum('status_visit', ['Perlu', 'Tidak Perlu'])->nullable();

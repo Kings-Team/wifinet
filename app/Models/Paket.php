@@ -18,7 +18,6 @@ class Paket extends Model
 
     protected $table = 'paket';
 
-
     public function pemasangan()
     {
         return $this->hasMany(Pemasangan::class);
@@ -26,6 +25,11 @@ class Paket extends Model
 
     public function pelanggan()
     {
-        return $this->hasMany(Pemasangan::class);
+        return $this->hasMany(Pelanggan::class);
+    }
+
+    public function ubahpaket()
+    {
+        return $this->hasMany(UbahPaket::class, 'paket_baru_id');
     }
 }

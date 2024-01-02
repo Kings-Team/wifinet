@@ -64,4 +64,9 @@ class Pelanggan extends Model
     {
         return $this->belongsTo(Paket::class, 'paket_id');
     }
+
+    public function mitra()
+    {
+        return $this->belongsTo(Mitra::class, 'mitra_id');
+    }
 }

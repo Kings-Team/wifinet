@@ -34,12 +34,12 @@ class Handler extends ExceptionHandler
             if ($e instanceof NotFoundHttpException) {
                 // Menampilkan halaman 404
 
-                return response()->view('pages.404', ['message' => $e->getMessage()], 404);
+                return response()->view('pages.error.404', ['message' => $e->getMessage()], 404);
             }
         });
 
         $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
-            return response()->view('pages.403', ['message' => $e->getMessage()], 404);
+            return response()->view('pages.error.403', ['message' => $e->getMessage()], 404);
         });
     }
 }

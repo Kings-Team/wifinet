@@ -25,4 +25,9 @@ class Mitra extends Model
     {
         return $this->hasMany(Pemasangan::class);
     }
+
+    public function pelanggan()
+    {
+        return $this->hasMany(Pelanggan::class);
+    }
 }

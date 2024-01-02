@@ -22,8 +22,18 @@ class Transaksi extends Model
     protected $table = 'transaksi';
 
 
-    public function user()
+    public function pemasangan()
     {
         return $this->hasMany(Pemasangan::class);
+    }
+
+    public function pelanggan()
+    {
+        return $this->hasMany(Pelanggan::class);
+    }
+
+    public function ubahPaket()
+    {
+        return $this->hasMany(UbahPaket::class);
     }
 }

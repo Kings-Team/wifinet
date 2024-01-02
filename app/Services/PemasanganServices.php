@@ -9,6 +9,7 @@ use App\Models\Pemasangan;
 use App\Models\Transaksi;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PemasanganServices
