@@ -93,4 +93,45 @@ class PemasanganController extends Controller
 
         return redirect()->route('pemasangan')->with('message', $request['message']);
     }
+
+    public function updateInstalasi(Request $request, $id)
+    {
+        $rules = [
+            'status_instalasi' => 'required',
+        ];
+        $data = $this->validate($request, $rules);
+
+        $request = $this->pemasanganServices->statusInstalasi($data, $id);
+
+        return redirect()->route('pemasangan')->with('message', $request['message']);
+    }
+
+    public function updateAktivasi(Request $request, $id)
+    {
+        $rules = [
+            'status_aktivasi' => 'required',
+        ];
+        $data = $this->validate($request, $rules);
+
+        $request = $this->pemasanganServices->statusAktivasi($data, $id);
+
+        return redirect()->route('pemasangan')->with('message', $request['message']);
+    }
+
+    public function updatePembayaran(Request $request, $id)
+    {
+        $rules = [
+            'biaya' => 'required',
+            'bayar' => 'required',
+            'diskon' => 'required',
+            'status' => 'required',
+            'keterangan' => 'nullable',
+        ];
+
+        $data = $this->validate($request, $rules);
+
+        $request = $this->pemasanganServices->pembayaran($data, $id);
+
+        return redirect()->route('pemasangan')->with('message', $request['message']);
+    }
 }

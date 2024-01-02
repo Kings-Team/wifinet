@@ -19,13 +19,7 @@ class UserController extends Controller
     {
         $result = $this->userServices->fetchAllUser();
 
-        $data = $result['data'];
-        $users = $result['user'];
-        $mitra = $result['mitra'];
-        $permission = $result['permission'];
-        $role = $result['role'];
-
-        return view('pages.user', compact('data', 'users', 'mitra', 'permission', 'role'));
+        return view('pages.user', $result);
     }
 
     public function store(Request $request)

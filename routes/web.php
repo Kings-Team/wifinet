@@ -34,3 +34,6 @@ Route::put('/pemasangan/{id}/update', [PemasanganController::class, 'update'])->
 Route::put('/pemasangan/{id}/assignment-sales', [PemasanganController::class, 'assignment'])->name('pemasangan.assignment.sales');
 Route::put('/pemasangan/{id}/assignment-teknisi', [PemasanganController::class, 'assignmentTeknisi'])->name('pemasangan.assignment.teknisi');
 Route::put('/pemasangan/{id}/survey', [PemasanganController::class, 'updateSurvey'])->name('pemasangan.survey');
+Route::put('/pemasangan/{id}/instalasi', [PemasanganController::class, 'updateInstalasi'])->name('pemasangan.instalasi');
+Route::put('/pemasangan/{id}/aktivasi', [PemasanganController::class, 'updateAktivasi'])->name('pemasangan.aktivasi');
+Route::put('/pemasangan/{id}/pembayaran', [PemasanganController::class, 'updatePembayaran'])->name('pemasangan.pembayaran');

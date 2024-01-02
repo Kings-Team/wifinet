@@ -138,20 +138,22 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <button data-bs-toggle="modal" data-bs-target="#show{{ $item->id }}"
-                                                    class="dropdown-item"><i class="bx bx-id-card me-1"></i>
-                                                    Show</button>
-                                                <button data-bs-toggle="modal"
-                                                    data-bs-target="#instalasi{{ $item->id }}" class="dropdown-item"><i
-                                                        class="bx bx-slider-alt me-1"></i>
-                                                    Instalasi</button>
-                                                <button data-bs-toggle="modal"
-                                                    data-bs-target="#aktivasi{{ $item->id }}" class="dropdown-item"><i
-                                                        class="bx bx-slider-alt me-1"></i>
-                                                    Aktivasi</button>
-                                                <button class="dropdown-item" data-bs-toggle="modal"
-                                                    data-bs-target="#delete"><i class="bx bx-trash me-1"></i>
-                                                    Delete</button>
+                                                @can('update pemasangan')
+                                                    <button data-bs-toggle="modal" data-bs-target="#show{{ $item->id }}"
+                                                        class="dropdown-item"><i class="bx bx-id-card me-1"></i>
+                                                        Show</button>
+                                                    <button data-bs-toggle="modal"
+                                                        data-bs-target="#update-instalasi{{ $item->id }}"
+                                                        class="dropdown-item"><i class="bx bx-slider-alt me-1"></i>
+                                                        Instalasi</button>
+                                                    <button data-bs-toggle="modal"
+                                                        data-bs-target="#update-aktivasi{{ $item->id }}"
+                                                        class="dropdown-item"><i class="bx bx-slider-alt me-1"></i>
+                                                        Aktivasi</button>
+                                                    <button class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#delete"><i class="bx bx-trash me-1"></i>
+                                                        Delete</button>
+                                                @endcan
                                             </div>
                                         </div>
                                     </td>
@@ -160,13 +162,29 @@
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->alamat }}</td>
                                     <td>{{ $item->telepon }}</td>
-                                    <td> <button type="button" class="btn btn-primary">
-                                            <span class="tf-icons bx bxs-credit-card" data-bs-toggle="modal"
-                                                data-bs-target="#pembayaran{{ $item->id }}"></span>
-                                        </button>
-                                        <button type="button" class="btn btn-warning" id="btnCetakPdf{{ $item->id }}">
-                                            <span class="tf-icons bx bxs-printer" data-bs-toggle="modal"></span>
-                                        </button>
+                                    <td>
+                                        @if ($item->status_aktivasi == 'berhasil aktivasi' && $item->transaksi->status == 'belum lunas')
+                                            <button type="button" class="btn btn-primary">
+                                                <span class="tf-icons bx bxs-credit-card" data-bs-toggle="modal"
+                                                    data-bs-target="#pembayaran{{ $item->id }}"></span>
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-primary" disabled>
+                                                <span class="tf-icons bx bxs-credit-card" data-bs-toggle="modal"
+                                                    data-bs-target="#pembayaran{{ $item->id }}"></span>
+                                            </button>
+                                        @endif
+                                        @if ($item->transaksi->status == 'belum lunas')
+                                            <button type="button" class="btn btn-warning" disabled
+                                                id="btnCetakPdf{{ $item->id }}">
+                                                <span class="tf-icons bx bxs-printer" data-bs-toggle="modal"></span>
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-warning"
+                                                id="btnCetakPdf{{ $item->id }}">
+                                                <span class="tf-icons bx bxs-printer" data-bs-toggle="modal"></span>
+                                            </button>
+                                        @endif
                                     </td>
                                 @endif
                             @endforeach
@@ -230,6 +248,7 @@
             </div>
         </div>
     </div>
+
     {{-- update data pemasangan --}}
     @foreach ($pemasangan as $value)
         <div class="modal fade" id="update{{ $value->id }}" tabindex="-1" aria-hidden="true">
@@ -459,6 +478,294 @@
             </div>
         </div>
     @endforeach
+
+    {{-- show --}}
+    @foreach ($pemasangan as $value)
+        <div class="modal fade" id="show{{ $value->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">Detail Pelanggan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">No Pelanggan</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $value->pelanggan->no_pelanggan }}" readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="role" class="form-label">Nama</label>
+                                    <input type="text" value="{{ $value->nama }}" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Alamat</label>
+                                    <input type="text" class="form-control" value="{{ $value->alamat }}" readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="role" class="form-label">Telepon</label>
+                                    <input type="text" value="{{ $value->telepon }}" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Username Pppoe</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $value->pelanggan->username_pppoe }}" readonly />
+                                </div>
+                                <div class="col mb-3 form-password-toggle">
+                                    <label class="form-label" for="password">Password Pppoe</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="password" class="form-control" id="password"
+                                            value="{{ $value->pelanggan->password_pppoe }}" readonly /><span
+                                            class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="role" class="form-label">Jenis Paket</label>
+                                    <input type="text" value="{{ $value->paket->jenis_paket }}" class="form-control"
+                                        readonly />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Tanggal Pasang</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $value->pelanggan->tgl_pasang }}" readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Tanggal Isolir</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $value->pelanggan->tgl_isolir }}" readonly />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Status Instalasi</label>
+                                    <input type="text" class="form-control" value="{{ $value->status_instalasi }}"
+                                        readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Status Aktivasi</label>
+                                    <input type="text" class="form-control" value="{{ $value->status_aktivasi }}"
+                                        readonly />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Biaya</label>
+                                    <input type="text" class="form-control" value="{{ $value->transaksi->biaya }}"
+                                        readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Bayar</label>
+                                    <input type="text" class="form-control" value="{{ $value->transaksi->biaya }}"
+                                        readonly />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Diskon</label>
+                                    <input type="text" class="form-control" value="{{ $value->transaksi->diskon }}"
+                                        readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Status</label>
+                                    <input type="text" class="form-control" value="{{ $value->transaksi->status }}"
+                                        readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    {{-- status instalasi --}}
+    @foreach ($pemasangan as $value)
+        <div class="modal fade" id="update-instalasi{{ $value->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">Edit Status Instalasi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('pemasangan.instalasi', $value->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label" for="status_instalasi">Status Survey</label>
+                                <select class="form-select" id="status_instalasi" name="status_instalasi">
+                                    <option value="" selected>Pilih Status Instalasi</option>
+                                    <option value="berhasil instalasi"
+                                        {{ $value->status_instalasi === 'berhasil instalasi' ? 'selected' : '' }}>
+                                        Berhasil Instalasi
+                                    </option>
+                                    <option value="gagal instalasi"
+                                        {{ $value->status_instalasi === 'gagal instalasi' ? 'selected' : '' }}>Gagal
+                                        Instalasi
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Batal
+                            </button>
+                            @if (is_null($value->status_instalasi))
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            @else
+                                <button type="submit" class="btn btn-primary" disabled>Simpan</button>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    {{-- status aktivasi --}}
+    @foreach ($pemasangan as $value)
+        <div class="modal fade" id="update-aktivasi{{ $value->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">Edit Status Aktivasi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('pemasangan.aktivasi', $value->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label" for="status_aktivasi">Status Survey</label>
+                                <select class="form-select" id="status_aktivasi" name="status_aktivasi">
+                                    <option value="" selected>Pilih Status Aktivasi</option>
+                                    <option value="berhasil aktivasi"
+                                        {{ $value->status_aktivasi === 'berhasil aktivasi' ? 'selected' : '' }}>
+                                        Berhasil aktivasi
+                                    </option>
+                                    <option value="gagal aktivasi"
+                                        {{ $value->status_aktivasi === 'gagal aktivasi' ? 'selected' : '' }}>Gagal
+                                        Aktivasi
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Batal
+                            </button>
+                            @if (is_null($value->status_instalasi && !is_null($value->status_aktivasi)))
+                                <button type="submit" class="btn btn-primary" disabled>Simpan</button>
+                            @else
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    {{-- pembayaran --}}
+    @foreach ($pemasangan as $value)
+        <div class="modal fade" id="pembayaran{{ $value->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">Transaksi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('pemasangan.pembayaran', $value->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">No Pelanggan</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $value->pelanggan->no_pelanggan }}" readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="role" class="form-label">Jenis Paket</label>
+                                    <input type="text" value="{{ $value->paket->jenis_paket }}" class="form-control"
+                                        readonly />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Iuran</label>
+                                    <input type="text" class="form-control" value="{{ $value->paket->iuran }}"
+                                        readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="role" class="form-label">Instalasi</label>
+                                    <input type="text" value="{{ $value->paket->instalasi }}" class="form-control"
+                                        readonly />
+                                </div>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="biaya" class="form-label">Biaya</label>
+                                    <input type="text" id="biaya" name="biaya" class="form-control"
+                                        value="{{ $value->paket->iuran + $value->paket->instalasi }}" readonly />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="bayar" class="form-label">Bayar</label>
+                                    <input type="text" id="bayar" name="bayar" class="form-control"
+                                        value="{{ $value->transaksi->bayar }}" required />
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-3">
+                                    <label for="diskon" class="form-label">Diskon</label>
+                                    <input type="text" id="diskon" name="diskon" class="form-control"
+                                        value="{{ $value->transaksi->diskon }}" required />
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="keterangan" class="form-label">Keterangan Diskon</label>
+                                    <input type="text" id="keterangan" name="keterangan" class="form-control"
+                                        value="{{ $value->transaksi->keterangan }}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3">
+                                    <label class="form-label" for="status">Status Lunas</label>
+                                    <select class="form-select" id="status" name="status" required>
+                                        <option value="" selected>Pilih Status Lunas</option>
+                                        <option value="lunas" {{ $value->status === 'lunas' ? 'selected' : '' }}>
+                                            Lunas
+                                        </option>
+                                        <option value="belum lunas"
+                                            {{ $value->status === 'belum lunas' ? 'selected' : '' }}>Belum
+                                            Lunas
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Batal
+                            </button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
 @endsection
 
 @push('scripts')
