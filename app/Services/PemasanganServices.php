@@ -346,4 +346,18 @@ class PemasanganServices
       }
     }
   }
+  public function cetakNota($request, $id)
+  {
+    try {
+      $pemasangan = $this->pemasangan->findOrFail($id);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+      throw new WebException($e->getMessage());
+    }
+
+    DB::beginTransaction();
+
+    if (isset($pemasangan)) {
+      # code...
+    }
+  }
 }

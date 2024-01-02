@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth/login');
-});
+})->middleware('isNoAuth');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('isNoAuth');
 Route::post('/login', [AuthController::class, 'loginAction'])->name('login.action');

@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class Handler extends ExceptionHandler
 {
@@ -29,6 +31,15 @@ class Handler extends ExceptionHandler
                 DB::rollBack();
                 return back()->withErrors($e->getMessage());
             }
+            if ($e instanceof NotFoundHttpException) {
+                // Menampilkan halaman 404
+
+                return response()->view('pages.404', ['message' => $e->getMessage()], 404);
+            }
+        });
+
+        $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
+            return response()->view('pages.403', ['message' => $e->getMessage()], 404);
         });
     }
 }
