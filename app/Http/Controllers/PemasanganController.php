@@ -134,4 +134,9 @@ class PemasanganController extends Controller
 
         return redirect()->route('pemasangan')->with('message', $request['message']);
     }
+
+    public function invoice($id)
+    {
+        return $this->pemasanganServices->cetakNota($id);
+    }
 }

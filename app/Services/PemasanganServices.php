@@ -8,6 +8,7 @@ use App\Models\Pelanggan;
 use App\Models\Pemasangan;
 use App\Models\Transaksi;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class PemasanganServices
@@ -346,18 +347,27 @@ class PemasanganServices
       }
     }
   }
-  public function cetakNota($request, $id)
+  public function cetakNota($id)
   {
     try {
-      $pemasangan = $this->pemasangan->findOrFail($id);
+      $customer = Pelanggan::findOrFail($id);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
       throw new WebException($e->getMessage());
     }
 
     DB::beginTransaction();
+    try {
+      $pemasangan = $this->pemasangan->find($customer->pemasangan_id);
+      $pdf = Pdf::loadView('pages.nota.pdf', ['customer' => $customer, 'pemasangan' => $pemasangan]);
+      $pdf->setPaper(array(0, 0, 250, 500), 'portrait');
+      $filename = $customer->no_pelanggan . '_' . $customer->nama . '.pdf';
+      // $pdf->save(storage_path('invoices') . '/' . $filename);
 
-    if (isset($pemasangan)) {
-      # code...
+      DB::commit();
+
+      return $pdf->download($filename);
+    } catch (\Exception $e) {
+      throw new WebException($e->getMessage());
     }
   }
 }
