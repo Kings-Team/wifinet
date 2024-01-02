@@ -65,6 +65,6 @@ class Pemasangan extends Model
 
     public function pelanggan()
     {
-        return $this->hasOne(Pelanggan::class);
+        return $this->hasOne(Pelanggan::class, 'pemasangan_id');
     }
 }

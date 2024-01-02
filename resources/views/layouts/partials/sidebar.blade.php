@@ -75,17 +75,15 @@
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts" style="color: black">Data Master</div>
             </a>
-            @if (auth()->user()->hasRole('route'))
+            @role('route')
                 <ul class="menu-sub">
-                    {{-- @can('read user') --}}
                     <li class="menu-item">
                         <a href="{{ route('user') }}" class="menu-link">
                             <div data-i18n="Without menu" style="color: black">Users</div>
                         </a>
                     </li>
-                    {{-- @endcan --}}
                 </ul>
-            @endif
+            @endrole
 
             <ul class="menu-sub">
                 {{-- @can('read paket') --}}

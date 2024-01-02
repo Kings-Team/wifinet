@@ -494,7 +494,7 @@
                                 <div class="col mb-3">
                                     <label for="nama" class="form-label">No Pelanggan</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $value->pelanggan->no_pelanggan }}" readonly />
+                                        value="{{ optional($value->pelanggan)->no_pelanggan }}" readonly />
                                 </div>
                                 <div class="col mb-3">
                                     <label for="role" class="form-label">Nama</label>
@@ -515,13 +515,13 @@
                                 <div class="col mb-3">
                                     <label for="nama" class="form-label">Username Pppoe</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $value->pelanggan->username_pppoe }}" readonly />
+                                        value="{{ optional($value->pelanggan)->username_pppoe }}" readonly />
                                 </div>
                                 <div class="col mb-3 form-password-toggle">
                                     <label class="form-label" for="password">Password Pppoe</label>
                                     <div class="input-group input-group-merge">
                                         <input type="password" class="form-control" id="password"
-                                            value="{{ $value->pelanggan->password_pppoe }}" readonly /><span
+                                            value="{{ optional($value->pelanggan)->password_pppoe }}" readonly /><span
                                             class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                     </div>
                                 </div>
@@ -537,12 +537,12 @@
                                 <div class="col mb-3">
                                     <label for="nama" class="form-label">Tanggal Pasang</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $value->pelanggan->tgl_pasang }}" readonly />
+                                        value="{{ optional($value->pelanggan)->tgl_pasang }}" readonly />
                                 </div>
                                 <div class="col mb-3">
                                     <label for="nama" class="form-label">Tanggal Isolir</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $value->pelanggan->tgl_isolir }}" readonly />
+                                        value="{{ optional($value->pelanggan)->tgl_isolir }}" readonly />
                                 </div>
                             </div>
                             <div class="row g-2">
@@ -693,7 +693,7 @@
                                 <div class="col mb-3">
                                     <label for="nama" class="form-label">No Pelanggan</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $value->pelanggan->no_pelanggan }}" readonly />
+                                        value="{{ optional($value->pelanggan)->no_pelanggan }}" readonly />
                                 </div>
                                 <div class="col mb-3">
                                     <label for="role" class="form-label">Jenis Paket</label>
@@ -766,6 +766,8 @@
         </div>
     @endforeach
 
+
+
 @endsection
 
 @push('scripts')
@@ -793,5 +795,14 @@
                 });
             @endif
         });
+    </script>
+    <script>
+        @foreach ($pemasangan as $item)
+            $('#btnCetakPdf{{ $item->id }}').click(function() {
+                var id = {{ $item->id }};
+                var pdfUrl = "{{ route('pemasangan.invoice', ':id') }}".replace(':id', id);
+                window.open(pdfUrl, '_blank');
+            });
+        @endforeach
     </script>
 @endpush

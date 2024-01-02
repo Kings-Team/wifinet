@@ -350,17 +350,20 @@ class PemasanganServices
   public function cetakNota($id)
   {
     try {
-      $customer = Pelanggan::findOrFail($id);
+      $pemasangan = Pemasangan::findOrFail($id);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
       throw new WebException($e->getMessage());
     }
 
     DB::beginTransaction();
     try {
-      $pemasangan = $this->pemasangan->find($customer->pemasangan_id);
+      $customer = $pemasangan->pelanggan;
+      if (!isset($customer)) {
+        throw new WebException('Data Pelanggan tidak ditemukan');
+      }
       $pdf = Pdf::loadView('pages.nota.pdf', ['customer' => $customer, 'pemasangan' => $pemasangan]);
       $pdf->setPaper(array(0, 0, 250, 500), 'portrait');
-      $filename = $customer->no_pelanggan . '_' . $customer->nama . '.pdf';
+      $filename = $customer->no_pelanggan . '_' . $pemasangan->nama . '.pdf';
       // $pdf->save(storage_path('invoices') . '/' . $filename);
 
       DB::commit();
