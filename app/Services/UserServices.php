@@ -28,17 +28,28 @@ class UserServices
 
     public function fetchAllUser()
     {
-        $data = $this->user->with(['mitra', 'roles', 'roles.permissions'])->orderByDesc('id')
-            ->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'route');
-            })
-            ->get();
-        $user = $this->user->paginate(10);
+        $userMitraId = auth()->user()->mitra_id;
+        $roleAdmin = auth()->user()->hasRole('admin ' . auth()->user()->mitra->nama_mitra);
+        if ($roleAdmin) {
+            $data = $this->user->with(['roles', 'roles.permissions'])->orderByDesc('id')
+                ->whereHas('mitra', function ($query) use ($userMitraId) {
+                    $query->where('id', $userMitraId);
+                })->whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'route');
+                })
+                ->get();
+        } else {
+            $data = $this->user->with(['mitra', 'roles', 'roles.permissions'])->orderByDesc('id')
+                ->whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'route');
+                })
+                ->get();
+        }
         $mitra = $this->mitra->all();
         $role = $this->role->with('permissions');
         $permission = $this->permission->all();
 
-        return compact('data', 'user', 'mitra', 'permission', 'role');
+        return compact('data', 'mitra', 'permission', 'role');
     }
 
     public function addUser($request)

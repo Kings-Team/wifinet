@@ -11,7 +11,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['isAuth', 'role:route']);
+        $this->middleware(['isAuth']);
         $this->userServices = new UserServices();
     }
 

@@ -38,9 +38,9 @@ class PemasanganController extends Controller
 
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->addPemasangan($data);
+        $result = $this->pemasanganServices->addPemasangan($data);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function update(Request $request, $id)
@@ -54,9 +54,9 @@ class PemasanganController extends Controller
         ];
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->updatePemasangan($data, $id);
+        $result = $this->pemasanganServices->updatePemasangan($data, $id);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function assignment(Request $request, $id)
@@ -66,9 +66,9 @@ class PemasanganController extends Controller
         ];
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->assignmentSales($data, $id);
+        $result = $this->pemasanganServices->assignmentSales($data, $id);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function updateSurvey(Request $request, $id)
@@ -80,9 +80,9 @@ class PemasanganController extends Controller
         ];
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->updateSurvey($data, $id);
+        $result = $this->pemasanganServices->updateSurvey($data, $id);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function assignmentTeknisi(Request $request, $id)
@@ -92,9 +92,9 @@ class PemasanganController extends Controller
         ];
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->assignmentTeknisi($data, $id);
+        $result = $this->pemasanganServices->assignmentTeknisi($data, $id);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function updateInstalasi(Request $request, $id)
@@ -104,9 +104,9 @@ class PemasanganController extends Controller
         ];
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->statusInstalasi($data, $id);
+        $result = $this->pemasanganServices->statusInstalasi($data, $id);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function updateAktivasi(Request $request, $id)
@@ -116,9 +116,9 @@ class PemasanganController extends Controller
         ];
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->statusAktivasi($data, $id);
+        $result = $this->pemasanganServices->statusAktivasi($data, $id);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function updatePembayaran(Request $request, $id)
@@ -133,9 +133,9 @@ class PemasanganController extends Controller
 
         $data = $this->validate($request, $rules);
 
-        $request = $this->pemasanganServices->pembayaran($data, $id);
+        $result = $this->pemasanganServices->pembayaran($data, $id);
 
-        return redirect()->route('pemasangan')->with('message', $request['message']);
+        return redirect()->route('pemasangan')->with('message', $result['message']);
     }
 
     public function invoice($id)

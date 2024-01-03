@@ -38,6 +38,11 @@ Route::put('/pemasangan/{id}/survey', [PemasanganController::class, 'updateSurve
 Route::put('/pemasangan/{id}/instalasi', [PemasanganController::class, 'updateInstalasi'])->name('pemasangan.instalasi');
 Route::put('/pemasangan/{id}/aktivasi', [PemasanganController::class, 'updateAktivasi'])->name('pemasangan.aktivasi');
 Route::put('/pemasangan/{id}/pembayaran', [PemasanganController::class, 'updatePembayaran'])->name('pemasangan.pembayaran');
-Route::get('/pemasangan/{id}/pdf', [PemasanganController::class, 'invoice'])->name('pemasangan.invoice');
+Route::get('/pemasangan/{id}/invoice', [PemasanganController::class, 'invoice'])->name('pemasangan.invoice');
 
 Route::get('/ubah-paket', [UbahPaketController::class, 'index'])->name('ubah-paket');
+Route::post('/ubah-paket/post', [UbahPaketController::class, 'store'])->name('ubah-paket.add');
+Route::put('/ubah-paket/{id}/visit', [UbahPaketController::class, 'visit'])->name('ubah-paket.visit');
+Route::put('/ubah-paket/{id}/proses', [UbahPaketController::class, 'proses'])->name('ubah-paket.proses');
+Route::put('/ubah-paket/{id}/pembayaran', [UbahPaketController::class, 'updatePembayaran'])->name('ubah-paket.pembayaran');
+Route::get('/pemasangan/{id}/invoice', [UbahPaketController::class, 'invoice'])->name('pemasangan.invoice');

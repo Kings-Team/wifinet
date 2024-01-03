@@ -7,65 +7,106 @@
                     Master /</span> User</h4>
             <div class="card">
                 <h5 class="card-header">
-                    <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add-user">Tambah</button>
-                </h5>
-                <div class="table-responsive text-nowrap">
-                    <table class="table mb-3">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Aksi</th>
-                                <th>Nama</th>
-                                <th>Role</th>
-                                <th>Email</th>
-                                <th>Mitra</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                            @foreach ($data as $item)
-                                <tr>
-                                    <td>
-                                        {{ $loop->iteration }}
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
+                    @if (auth()->user()->hasRole('route'))
+                        <button class="btn btn-primary float-end" data-bs-toggle="modal"
+                            data-bs-target="#add-user">Tambah</button>
+                    @else
+                        <button class="btn btn-primary float-end" data-bs-toggle="modal"
+                            data-bs-target="#add">Tambah</button>
+                    @endif
 
-                                                <button data-bs-toggle="modal"
-                                                    data-bs-target="#update-user{{ $item->id }}"
-                                                    class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>
-                                                    Edit</button>
-                                                <button data-bs-toggle="modal"
-                                                    data-bs-target="#modalHapus{{ $item->id }}" class="dropdown-item"><i
-                                                        class="bx bx-trash me-1"></i>
-                                                    Hapus</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <strong>{{ $item->name }}</strong>
-                                    </td>
-                                    <td>
-                                        @if ($item->roles->isNotEmpty())
-                                            <span
-                                                class="badge bg-label-primary me-1">{{ $item->roles->pluck('name')->implode(', ') }}</span>
-                                        @else
-                                            No Role
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{ $item->email }}
-                                    </td>
-                                    <td>{{ optional($item->mitra)->nama_mitra }}</td>
+                </h5>
+                <div class="card-body">
+                    <div class="table-responsive text-nowrap">
+                        <table id="myTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Aksi</th>
+                                    <th>Nama</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    @role('route')
+                                        <th>Mitra</th>
+                                    @endrole
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    {{-- {{ $users->links('pagination::bootstrap-5') }} --}}
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @foreach ($data as $item)
+                                    @role('route')
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+
+                                                        <button data-bs-toggle="modal"
+                                                            data-bs-target="#update-user{{ $item->id }}"
+                                                            class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>
+                                                            Edit</button>
+                                                        <button data-bs-toggle="modal"
+                                                            data-bs-target="#modalHapus{{ $item->id }}"
+                                                            class="dropdown-item"><i class="bx bx-trash me-1"></i>
+                                                            Hapus</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>{{ $item->name }}</strong>
+                                            </td>
+                                            <td>
+                                                @if ($item->roles->isNotEmpty())
+                                                    <span
+                                                        class="badge bg-label-primary me-1">{{ $item->roles->pluck('name')->implode(', ') }}</span>
+                                                @else
+                                                    No Role
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $item->email }}
+                                            </td>
+                                            <td>{{ optional($item->mitra)->nama_mitra }}</td>
+                                        </tr>
+                                    @endrole
+                                    @role('admin ' . auth()->user()->mitra->nama_mitra)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-icon btn-primary">
+                                                    <span class="tf-icons bx bx-info-circle"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-icon btn-warning">
+                                                    <span class="tf-icons bx bx-edit"></span>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                {{ $item->name }}
+                                            </td>
+                                            <td>
+                                                @if ($item->roles->isNotEmpty())
+                                                    <span
+                                                        class="badge bg-label-primary me-1">{{ $item->roles->pluck('name')->implode(', ') }}</span>
+                                                @else
+                                                    No Role
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $item->email }}
+                                            </td>
+                                        </tr>
+                                    @endrole
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -362,7 +362,7 @@ class PemasanganServices
       if (!isset($customer)) {
         throw new WebException('Data Pelanggan tidak ditemukan');
       }
-      $pdf = Pdf::loadView('pages.nota.pdf', ['customer' => $customer, 'pemasangan' => $pemasangan]);
+      $pdf = Pdf::loadView('pages.nota.invoice-pemasangan', ['customer' => $customer, 'pemasangan' => $pemasangan]);
       $pdf->setPaper(array(0, 0, 250, 500), 'portrait');
       $filename = $customer->no_pelanggan . '_' . $pemasangan->nama . '.pdf';
       // $pdf->save(storage_path('invoices') . '/' . $filename);

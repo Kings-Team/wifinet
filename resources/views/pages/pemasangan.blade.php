@@ -13,45 +13,122 @@
                             data-bs-target="#add-pemasangan">Tambah</button>
                     @endif
                 </h5>
-                <div class="table-responsive text-nowrap">
-                    <table class="table mb-3">
-                        <thead>
-                            @if (auth()->user()->hasRole('admin ' . auth()->user()->mitra->nama_mitra) ||
-                                    auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
-                                <tr>
-                                    <th>No</th>
-                                    <th>Aksi</th>
-                                    <th>No. Pendaftaran</th>
-                                    <th>NIK</th>
-                                    <th>Nama</th>
-                                    <th>Alamat</th>
-                                    <th>Telepon</th>
-                                    <th>Paket</th>
-                                    <th>Nama Sales</th>
-                                    @if (auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
-                                        <th>Nama Teknisi</th>
-                                    @endif
-                                    <th>Status</th>
-                                </tr>
-                            @endif
-                            @if (auth()->user()->hasRole('teknisi ' . auth()->user()->mitra->nama_mitra))
-                                <tr>
-                                    <th>No</th>
-                                    <th>Aksi</th>
-                                    <th>No. Pelanggan</th>
-                                    <th>NIK</th>
-                                    <th>Nama</th>
-                                    <th>Alamat</th>
-                                    <th>Telepon</th>
-                                    <th>Pembayaran</th>
-                                </tr>
-                            @endif
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                            @foreach ($pemasangan as $item)
+                <div class="card-body">
+                    <div class="table-responsive text-nowrap">
+                        <table id="myTable" class=" table mb-3">
+                            <thead>
                                 @if (auth()->user()->hasRole('admin ' . auth()->user()->mitra->nama_mitra) ||
                                         auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
                                     <tr>
+                                        <th>No</th>
+                                        <th>Aksi</th>
+                                        <th>No. Pendaftaran</th>
+                                        <th>NIK</th>
+                                        <th>Nama</th>
+                                        <th>Alamat</th>
+                                        <th>Telepon</th>
+                                        <th>Paket</th>
+                                        <th>Nama Sales</th>
+                                        @if (auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
+                                            <th>Nama Teknisi</th>
+                                        @endif
+                                        <th>Status</th>
+                                    </tr>
+                                @endif
+                                @if (auth()->user()->hasRole('teknisi ' . auth()->user()->mitra->nama_mitra))
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Aksi</th>
+                                        <th>No. Pelanggan</th>
+                                        <th>NIK</th>
+                                        <th>Nama</th>
+                                        <th>Alamat</th>
+                                        <th>Telepon</th>
+                                        <th>Pembayaran</th>
+                                    </tr>
+                                @endif
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @foreach ($pemasangan as $item)
+                                    @if (auth()->user()->hasRole('admin ' . auth()->user()->mitra->nama_mitra) ||
+                                            auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('update pemasangan')
+                                                            @if (auth()->user()->hasRole('admin ' . auth()->user()->mitra->nama_mitra))
+                                                                <button data-bs-toggle="modal"
+                                                                    data-bs-target="#update{{ $item->id }}"
+                                                                    class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>
+                                                                    Edit</button>
+                                                                <button data-bs-toggle="modal"
+                                                                    data-bs-target="#assignment{{ $item->id }}"
+                                                                    class="dropdown-item"><i class="bx bx-share me-1"></i>
+                                                                    Assignment</button>
+                                                                <button data-bs-toggle="modal"
+                                                                    data-bs-target="#delete{{ $item->id }}"
+                                                                    class="dropdown-item"><i class="bx bx-trash me-1"></i>
+                                                                    Hapus</button>
+                                                            @endif
+                                                            @if (auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
+                                                                <button data-bs-toggle="modal"
+                                                                    data-bs-target="#update-survey{{ $item->id }}"
+                                                                    class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>
+                                                                    Status Survey</button>
+                                                                <button data-bs-toggle="modal"
+                                                                    data-bs-target="#assignment-teknisi{{ $item->id }}"
+                                                                    class="dropdown-item"><i class="bx bx-share me-1"></i>
+                                                                    Assignment</button>
+                                                            @endif
+                                                        @endcan
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{ $item->no_pendaftaran }}
+                                            </td>
+                                            <td>
+                                                {{ $item->nik }}
+                                            </td>
+                                            <td>
+                                                {{ $item->nama }}
+                                            </td>
+                                            <td>
+                                                {{ $item->alamat }}
+                                            </td>
+                                            <td>
+                                                {{ $item->telepon }}
+                                            </td>
+                                            <td>
+                                                {{ optional($item->paket)->jenis_paket }}
+                                            </td>
+                                            <td>{{ $item->user_survey }}</td>
+                                            @if (auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
+                                                <td>{{ optional($item->transaksi)->user_action }}</td>
+                                            @endif
+                                            <td>
+                                                @if ($item->status_survey === 'belum survey')
+                                                    <span class="badge bg-secondary">{{ $item->status_survey }}</span>
+                                                @elseif ($item->status_survey === 'gagal survey')
+                                                    <span class="badge bg-danger">{{ $item->status_survey }}</span>
+                                                @elseif ($item->status_survey === 'berhasil survey')
+                                                    <span class="badge bg-success">{{ $item->status_survey }}</span>
+                                                @else
+                                                    <span class="badge bg-dark">{{ $item->status_survey }}</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (auth()->user()->hasRole('teknisi ' . auth()->user()->mitra->nama_mitra))
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
@@ -63,133 +140,59 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     @can('update pemasangan')
-                                                        @if (auth()->user()->hasRole('admin ' . auth()->user()->mitra->nama_mitra))
-                                                            <button data-bs-toggle="modal"
-                                                                data-bs-target="#update{{ $item->id }}"
-                                                                class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>
-                                                                Edit</button>
-                                                            <button data-bs-toggle="modal"
-                                                                data-bs-target="#assignment{{ $item->id }}"
-                                                                class="dropdown-item"><i class="bx bx-share me-1"></i>
-                                                                Assignment</button>
-                                                            <button data-bs-toggle="modal"
-                                                                data-bs-target="#delete{{ $item->id }}"
-                                                                class="dropdown-item"><i class="bx bx-trash me-1"></i>
-                                                                Hapus</button>
-                                                        @endif
-                                                        @if (auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
-                                                            <button data-bs-toggle="modal"
-                                                                data-bs-target="#update-survey{{ $item->id }}"
-                                                                class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>
-                                                                Status Survey</button>
-                                                            <button data-bs-toggle="modal"
-                                                                data-bs-target="#assignment-teknisi{{ $item->id }}"
-                                                                class="dropdown-item"><i class="bx bx-share me-1"></i>
-                                                                Assignment</button>
-                                                        @endif
+                                                        <button data-bs-toggle="modal"
+                                                            data-bs-target="#show{{ $item->id }}" class="dropdown-item"><i
+                                                                class="bx bx-id-card me-1"></i>
+                                                            Show</button>
+                                                        <button data-bs-toggle="modal"
+                                                            data-bs-target="#update-instalasi{{ $item->id }}"
+                                                            class="dropdown-item"><i class="bx bx-slider-alt me-1"></i>
+                                                            Instalasi</button>
+                                                        <button data-bs-toggle="modal"
+                                                            data-bs-target="#update-aktivasi{{ $item->id }}"
+                                                            class="dropdown-item"><i class="bx bx-slider-alt me-1"></i>
+                                                            Aktivasi</button>
+                                                        <button class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#delete"><i class="bx bx-trash me-1"></i>
+                                                            Delete</button>
                                                     @endcan
-
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>{{ $item->pelanggan->no_pelanggan }}</td>
+                                        <td>{{ $item->nik }}</td>
+                                        <td>{{ $item->nama }}</td>
+                                        <td>{{ $item->alamat }}</td>
+                                        <td>{{ $item->telepon }}</td>
                                         <td>
-                                            {{ $item->no_pendaftaran }}
-                                        </td>
-                                        <td>
-                                            {{ $item->nik }}
-                                        </td>
-                                        <td>
-                                            {{ $item->nama }}
-                                        </td>
-                                        <td>
-                                            {{ $item->alamat }}
-                                        </td>
-                                        <td>
-                                            {{ $item->telepon }}
-                                        </td>
-                                        <td>
-                                            {{ optional($item->paket)->jenis_paket }}
-                                        </td>
-                                        <td>{{ $item->user_survey }}</td>
-                                        @if (auth()->user()->hasRole('sales ' . auth()->user()->mitra->nama_mitra))
-                                            <td>{{ optional($item->transaksi)->user_action }}</td>
-                                        @endif
-                                        <td>
-                                            @if ($item->status_survey === 'belum survey')
-                                                <span class="badge bg-secondary">{{ $item->status_survey }}</span>
-                                            @elseif ($item->status_survey === 'gagal survey')
-                                                <span class="badge bg-danger">{{ $item->status_survey }}</span>
-                                            @elseif ($item->status_survey === 'berhasil survey')
-                                                <span class="badge bg-success">{{ $item->status_survey }}</span>
+                                            @if ($item->status_aktivasi == 'berhasil aktivasi' && $item->transaksi->status == 'belum lunas')
+                                                <button type="button" class="btn btn-sm btn-primary">
+                                                    <span class="tf-icons bx bxs-credit-card" data-bs-toggle="modal"
+                                                        data-bs-target="#pembayaran{{ $item->id }}"></span>
+                                                </button>
                                             @else
-                                                <span class="badge bg-dark">{{ $item->status_survey }}</span>
+                                                <button type="button" class="btn btn-sm btn-primary" disabled>
+                                                    <span class="tf-icons bx bxs-credit-card" data-bs-toggle="modal"
+                                                        data-bs-target="#pembayaran{{ $item->id }}"></span>
+                                                </button>
+                                            @endif
+                                            @if ($item->transaksi->status == 'belum lunas')
+                                                <button type="button" class="btn btn-sm btn-warning" disabled
+                                                    id="btnCetakPdf{{ $item->id }}">
+                                                    <span class="tf-icons bx bxs-printer" data-bs-toggle="modal"></span>
+                                                </button>
+                                            @else
+                                                <button type="button" class="btn btn-sm btn-warning"
+                                                    id="btnCetakPdf{{ $item->id }}">
+                                                    <span class="tf-icons bx bxs-printer" data-bs-toggle="modal"></span>
+                                                </button>
                                             @endif
                                         </td>
-                                    </tr>
-                                @endif
-                                @if (auth()->user()->hasRole('teknisi ' . auth()->user()->mitra->nama_mitra))
-                                    <td>
-                                        {{ $loop->iteration }}
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                @can('update pemasangan')
-                                                    <button data-bs-toggle="modal" data-bs-target="#show{{ $item->id }}"
-                                                        class="dropdown-item"><i class="bx bx-id-card me-1"></i>
-                                                        Show</button>
-                                                    <button data-bs-toggle="modal"
-                                                        data-bs-target="#update-instalasi{{ $item->id }}"
-                                                        class="dropdown-item"><i class="bx bx-slider-alt me-1"></i>
-                                                        Instalasi</button>
-                                                    <button data-bs-toggle="modal"
-                                                        data-bs-target="#update-aktivasi{{ $item->id }}"
-                                                        class="dropdown-item"><i class="bx bx-slider-alt me-1"></i>
-                                                        Aktivasi</button>
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#delete"><i class="bx bx-trash me-1"></i>
-                                                        Delete</button>
-                                                @endcan
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ $item->pelanggan->no_pelanggan }}</td>
-                                    <td>{{ $item->nik }}</td>
-                                    <td>{{ $item->nama }}</td>
-                                    <td>{{ $item->alamat }}</td>
-                                    <td>{{ $item->telepon }}</td>
-                                    <td>
-                                        @if ($item->status_aktivasi == 'berhasil aktivasi' && $item->transaksi->status == 'belum lunas')
-                                            <button type="button" class="btn btn-primary">
-                                                <span class="tf-icons bx bxs-credit-card" data-bs-toggle="modal"
-                                                    data-bs-target="#pembayaran{{ $item->id }}"></span>
-                                            </button>
-                                        @else
-                                            <button type="button" class="btn btn-primary" disabled>
-                                                <span class="tf-icons bx bxs-credit-card" data-bs-toggle="modal"
-                                                    data-bs-target="#pembayaran{{ $item->id }}"></span>
-                                            </button>
-                                        @endif
-                                        @if ($item->transaksi->status == 'belum lunas')
-                                            <button type="button" class="btn btn-warning" disabled
-                                                id="btnCetakPdf{{ $item->id }}">
-                                                <span class="tf-icons bx bxs-printer" data-bs-toggle="modal"></span>
-                                            </button>
-                                        @else
-                                            <button type="button" class="btn btn-warning"
-                                                id="btnCetakPdf{{ $item->id }}">
-                                                <span class="tf-icons bx bxs-printer" data-bs-toggle="modal"></span>
-                                            </button>
-                                        @endif
-                                    </td>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

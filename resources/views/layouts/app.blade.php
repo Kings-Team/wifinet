@@ -40,18 +40,19 @@
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
 
-    <!-- Vendors CSS -->
+    <!-- Vendors    CSS -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
 
     <!-- Page CSS -->
     @stack('styles')
+
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
-    <script src="sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="sweetalert2.min.css">
-
+    {{-- <script src="sweetalert2.min.js"></script> --}}
+    {{-- <link rel="stylesheet" href="sweetalert2.min.css"> --}}
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
@@ -112,10 +113,13 @@
     <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->
 
+    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        let table = new DataTable('#myTable');
+    </script>
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.min.js"></script>
 
     <!-- Vendors JS -->
     <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
@@ -145,7 +149,7 @@
     </script>
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="sweetalert2.all.min.js"></script>
+    {{-- <script src="sweetalert2.all.min.js"></script> --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
