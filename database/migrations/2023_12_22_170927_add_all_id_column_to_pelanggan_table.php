@@ -17,9 +17,9 @@ return new class() extends Migration
             $table->unsignedBigInteger('odp_port_id')->nullable()->after('port_id');
             $table->unsignedBigInteger('router_id')->nullable()->after('odp_port_id');
             $table->unsignedBigInteger('olt_id')->nullable()->after('router_id');
-            $table->unsignedBigInteger('pemasangan_id')->nullable()->unique()->after('olt_id');
-            $table->unsignedBigInteger('paket_id')->nullable()->unique()->after('pemasangan_id');
-            $table->unsignedBigInteger('mitra_id')->nullable()->unique()->after('paket_id');
+            $table->unsignedBigInteger('pemasangan_id')->nullable()->after('olt_id');
+            $table->unsignedBigInteger('paket_id')->nullable()->after('pemasangan_id');
+            $table->unsignedBigInteger('mitra_id')->nullable()->after('paket_id');
             $table->foreign('onu_id')->references('id')->on('onu')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('port_id')->references('id')->on('port')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('odp_port_id')->references('id')->on('odp_port')->onDelete('restrict')->onUpdate('restrict');

@@ -46,4 +46,4 @@ Route::post('/ubah-paket/post', [UbahPaketController::class, 'store'])->name('ub
 Route::put('/ubah-paket/{id}/visit', [UbahPaketController::class, 'visit'])->name('ubah-paket.visit');
 Route::put('/ubah-paket/{id}/proses', [UbahPaketController::class, 'proses'])->name('ubah-paket.proses');
 Route::put('/ubah-paket/{id}/pembayaran', [UbahPaketController::class, 'updatePembayaran'])->name('ubah-paket.pembayaran');
-Route::get('/pemasangan/{id}/invoice', [UbahPaketController::class, 'invoice'])->name('pemasangan.invoice');
+Route::get('/pemasangan/{id}/invoice', [UbahPaketController::class, 'invoice'])->name('pemasangan.invoice.ubah-paket');
