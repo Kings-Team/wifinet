@@ -781,7 +781,7 @@
                     title: 'Berhasil',
                     text: '{{ Session::get('message') }}',
                     icon: 'success',
-                    confirmButtonText: 'Ok'
+                    confirmButtonText: 'OK'
                 });
             @endif
             @if ($errors->any())
@@ -794,7 +794,7 @@
                     title: 'Error',
                     text: errorMessage,
                     icon: 'error',
-                    confirmButtonText: 'Ok'
+                    confirmButtonText: 'OK'
                 });
             @endif
         });

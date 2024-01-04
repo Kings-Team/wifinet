@@ -21,6 +21,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/user', [UserController::class, 'index'])->name('user');
 Route::post('/user/post', [UserController::class, 'store'])->name('user.add');
 Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
+Route::put('/user/{id}/update-admin', [UserController::class, 'adminUpdateUser'])->name('user.update.admin');
 Route::delete('/user/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
 
 

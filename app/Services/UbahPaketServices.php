@@ -249,20 +249,20 @@ class UbahPaketServices
   public function cetakNota($id)
   {
     try {
-      $pemasangan = $this->ubahpaket->findOrFail($id);
+      $ubahpaket = $this->ubahpaket->findOrFail($id);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
       throw new WebException($e->getMessage());
     }
 
     DB::beginTransaction();
     try {
-      $customer = $pemasangan->pelanggan;
+      $customer = $ubahpaket->pelanggan;
       if (!isset($customer)) {
         throw new WebException('Data Pelanggan tidak ditemukan');
       }
-      $pdf = Pdf::loadView('pages.nota.pdf', ['customer' => $customer, 'pemasangan' => $pemasangan]);
+      $pdf = Pdf::loadView('pages.nota.invoice-ubah-paket', ['customer' => $customer, 'ubahpaket' => $ubahpaket]);
       $pdf->setPaper(array(0, 0, 250, 500), 'portrait');
-      $filename = $customer->no_pelanggan . '_' . $pemasangan->nama . '.pdf';
+      $filename = $customer->no_pelanggan . '_' . $customer->pemasangan->nama . '.pdf';
       // $pdf->save(storage_path('invoices') . '/' . $filename);
 
       DB::commit();

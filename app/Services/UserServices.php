@@ -178,4 +178,33 @@ class UserServices
         }
         throw new WebException('Gagal menghapus user, user tidak ditemukan');
     }
+
+    public function adminUpdate($request, $id)
+    {
+        try {
+            $user = $this->user->findOrFail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw new WebException($e->getMessage());
+        }
+
+        DB::beginTransaction();
+
+        if (isset($user)) {
+            $update = $user->update([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+            ]);
+            if ($update) {
+                DB::commit();
+                return [
+                    'success' => true,
+                    'message' => "Berhasil mengupdate user",
+                    'code' => 200
+                ];
+            }
+            throw new WebException('Gagal mengupdate terjadi kesalahan');
+        }
+        throw new WebException('Gagal mengupdate terjadi kesalahan');
+    }
 }

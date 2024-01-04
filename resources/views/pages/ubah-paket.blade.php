@@ -547,7 +547,7 @@
                     title: 'Berhasil',
                     text: '{{ Session::get('message') }}',
                     icon: 'success',
-                    confirmButtonText: 'Ok'
+                    confirmButtonText: 'OK'
                 });
             @endif
             @if ($errors->any())
@@ -560,26 +560,31 @@
                     title: 'Error',
                     text: errorMessage,
                     icon: 'error',
-                    confirmButtonText: 'Ok'
+                    confirmButtonText: 'OK'
                 });
             @endif
         });
-    </script>
-    <script>
+
         $(document).ready(function() {
             $('#pelanggan_id').select2({
                 placeholder: 'Cari Pelanggan',
                 dropdownParent: $('#add-ubahpaket')
             });
+
+            @foreach ($ubahpaket as $item)
+                $(document).on('click', '#btnCetakPdf{{ $item->id }}', function() {
+                    var id = {{ $item->id }};
+                    var pdfUrl = "{{ route('ubah-paket.invoice', ['id' => ':id']) }}".replace(':id', id);
+                    window.open(pdfUrl, '_blank');
+                });
+            @endforeach
         });
-    </script>
-    <script>
-        @foreach ($ubahpaket as $item)
-            $('#btnCetakPdf{{ $item->id }}').click(function() {
-                var id = {{ $item->id }};
-                var pdfUrl = "{{ route('ubah-paket.invoice', ':id') }}".replace(':id', id);
-                window.open(pdfUrl, '_blank');
-            });
-        @endforeach
+        $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+            var targetTab = $(e.target).attr('href'); // newly activated tab
+            if (targetTab === '#navs-pills-top-profile') {
+                // Initialize modals or any other actions specific to this tab
+                // Example: $('#myModal').modal('show');
+            }
+        });
     </script>
 @endpush

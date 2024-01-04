@@ -45,7 +45,6 @@
                                                         <i class="bx bx-dots-vertical-rounded"></i>
                                                     </button>
                                                     <div class="dropdown-menu">
-
                                                         <button data-bs-toggle="modal"
                                                             data-bs-target="#update-user{{ $item->id }}"
                                                             class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>
@@ -80,10 +79,9 @@
                                                 {{ $loop->iteration }}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-icon btn-primary">
-                                                    <span class="tf-icons bx bx-info-circle"></span>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-icon btn-warning">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#update-user-admin{{ $item->id }}"
+                                                    class="btn btn-sm btn-icon btn-warning">
                                                     <span class="tf-icons bx bx-edit"></span>
                                                 </button>
                                             </td>
@@ -280,7 +278,6 @@
                                     <input type="text" id="role" name="name_role" class="form-control"
                                         placeholder="Enter Name" value="{{ $firstRoleName }}" required />
                                 </div>
-
                             </div>
                             <div class="row g-2 mb-3">
                                 <div class="col mb-0">
@@ -327,6 +324,51 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Tutup
+                            </button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    {{-- modal update admin --}}
+    @foreach ($data as $value)
+        <div class="modal fade" id="update-user-admin{{ $value->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">Edit Data User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('user.update.admin', $value->id) }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="nama" class="form-label">Nama</label>
+                                    <input type="text" id="nama" name="name" class="form-control"
+                                        placeholder="Masukan Name" value="{{ $value->name }}" required />
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col mb-0">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" id="email" name="email" class="form-control"
+                                        placeholder="xxxx@gmail.com" value="{{ $value->email }}" required />
+                                </div>
+                                <div class="col mb-0">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="text" id="password" name="password" class="form-control"
+                                        placeholder="********" />
                                 </div>
                             </div>
                         </div>

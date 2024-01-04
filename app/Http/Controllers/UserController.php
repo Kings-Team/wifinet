@@ -63,4 +63,19 @@ class UserController extends Controller
     {
         return $this->userServices->deleteUser($id);
     }
+
+    public function adminUpdateUser(Request $request, $id)
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'nullable|min:6'
+        ];
+
+        $data = $this->validate($request, $rules);
+
+        $result = $this->userServices->adminUpdate($data, $id);
+
+        return redirect()->route('user')->with('message', $result['message']);
+    }
 }
