@@ -78,13 +78,15 @@
                     <i class="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="Layouts" style="color: black">Data Master</div>
                 </a>
-                <ul class="menu-sub">
-                    <li class="menu-item">
-                        <a href="{{ route('user') }}" class="menu-link">
-                            <div data-i18n="Without menu" style="color: black">Users</div>
-                        </a>
-                    </li>
-                </ul>
+                @if (auth()->user()->hasRole('admin ' . auth()->user()->mitra->nama_mitra))
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="{{ route('user') }}" class="menu-link">
+                                <div data-i18n="Without menu" style="color: black">Users</div>
+                            </a>
+                        </li>
+                    </ul>
+                @endif
 
                 <ul class="menu-sub">
                     {{-- @can('read paket') --}}
